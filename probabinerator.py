@@ -1,7 +1,6 @@
 __author__ = 'szeitlin'
 
 from collections import Counter
-import pandas as pd
 
 
 class Probabinerator:
@@ -36,9 +35,9 @@ class Probabinerator:
         Use probability binning approach to
         combine bins when invind has many bins with unequal counts
 
-        :param invind: keys are number of counts,
+        :param self.invind: keys are number of counts,
         values are the range
-        :param bins: number of bins to aim for, default is 3
+        :param bins: number of bins to aim for (int), default is 3
         :return: list of lists (pairs) defining bin ranges
         """
         #sum the total number of counts, then divide equally into bins
@@ -73,4 +72,24 @@ class Probabinerator:
             newbins[sum(key_list)] = [min(value_list), max(value_list)]
             self.bin_ranges = sorted(newbins.values(), key=lambda x:x[0])
 
-    def
+    def bin_masker(self):
+        """
+        Use bin_ranges from probability binning to create categorical column
+
+        Should work for any number of bins > 0
+
+        :param self.df: pandas dataframe as reference and target
+        :param self.feature: reference column name (str) - will be used to create new one
+        :param self.bin_ranges: sorted list of newbins, only care about using the values as bin ranges [min, max]
+        :return: modified pandas dataframe with categorical column
+        """
+        masks = []
+
+        for item in self.bin_ranges:
+            mask = (self.df[self.feature] >= item[0]) & (self.df[self.feature] < item[1])
+            masks.append(mask)
+
+        for i, mask in enumerate(masks):
+            self.df.loc[mask, (self.feature + '_cat')] = i
+            self.df[self.feature + '_cat'].fillna(0, inplace=True) #get the bottom category
+
