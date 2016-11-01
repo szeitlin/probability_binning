@@ -1,14 +1,14 @@
 __author__ = 'szeitlin'
 
 from collections import Counter
-
+import pandas as pd
 
 class Probabinerator:
     """
     Create and apply categorical labels using probability binning.
     """
 
-    def __init__(self, df, colname):
+    def __init__(self, df: pd.DataFrame, colname:str) -> None:
         """
         Initialize required inputs.
 
@@ -25,7 +25,7 @@ class Probabinerator:
         :return self.invind: inverted index as a dict {counts: list of values that have those counts}
 
         """
-        counts = Counter(df[column])
+        counts = Counter(self.df[self.feature])
         self.invind = {}
         for key, val in counts.items():
             self.invind.setdefault(val, []).append(key)
