@@ -93,3 +93,9 @@ class Probabinerator:
             self.df.loc[mask, (self.feature + '_cat')] = i
             self.df[self.feature + '_cat'].fillna(0, inplace=True) #get the bottom category
 
+
+if '__name__'=='__main__':
+    prob = Probabinerator() #<-- requires dummy data for testing
+    prob.count_index()
+    prob.bin_combiner()
+    prob.bin_masker()

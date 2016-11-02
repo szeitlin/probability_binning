@@ -1,15 +1,17 @@
 __author__ = 'szeitlin'
 
-import pytest
 from probabinerator import Probabinerator
 
 import pandas as pd
 
-@pytest.fixture()
-def before():
-    print('\nbefore each test')
-    prob = Probabinerator()
+class TestProbabinerator:
 
-def test_probabinerator(prob):
+    @classmethod
+    def setup_class(cls):
+        print('runs once')
+        df =
+        cls.prob = Probabinerator()
 
-    assert(isinstance(prob.df, pd.DataFrame))
+    def test_probabinerator(self):
+
+        assert(isinstance(self.prob.df, pd.DataFrame))
