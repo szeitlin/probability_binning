@@ -2,6 +2,7 @@ __author__ = 'szeitlin'
 
 from collections import Counter
 import pandas as pd
+from ggplot import *
 
 class Probabinerator:
     """
@@ -93,6 +94,17 @@ class Probabinerator:
             self.df.loc[mask, (self.feature + '_cat')] = i
             self.df[self.feature + '_cat'].fillna(0, inplace=True) #get the bottom category
 
+    def plot_with_newbins(self):
+        """
+        Make a plot using the newbins (output of bin_combiner with toplot=True)
+
+        :return:(plot will show inline in jupyter notebook)
+        """
+        x = list(self.newbins.values())
+        y = list(self.newbins.keys())
+        plotframe = pd.DataFrame({"x":x, "y":y})
+
+        return ggplot(aes(x="x", weight="y"), plotframe) + geom_bar()
 
 if '__name__'=='__main__':
     prob = Probabinerator() #<-- requires dummy data for testing
