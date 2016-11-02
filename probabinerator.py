@@ -19,7 +19,7 @@ class Probabinerator:
         self.df = df
         self.feature = colname
 
-    def count_index(self):
+    def count_index(self) -> dict:
         """
         Group by counts.
 
