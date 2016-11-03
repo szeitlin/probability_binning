@@ -106,7 +106,7 @@ class Probabinerator:
 
         return ggplot(aes(x="x", weight="y"), plotframe) + geom_bar()
 
-if '__name__'=='__main__':
+if __name__ =='__main__':
     df = pd.read_csv("http://people.stern.nyu.edu/wgreene/Text/Edition7/TableF18-2.csv")
     print(df.head())
     prob = Probabinerator(df, 'INVC')

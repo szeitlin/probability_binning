@@ -37,7 +37,7 @@ class TestProbabinerator:
         self.prob.bin_combiner()
         assert(all([isinstance(x, list) for x in self.prob.bin_ranges]))
 
-if '__name__'=='__main__':
+if __name__=='__main__':
 
     #Not sure if this actually works or not
 
