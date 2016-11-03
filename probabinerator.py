@@ -107,7 +107,11 @@ class Probabinerator:
         return ggplot(aes(x="x", weight="y"), plotframe) + geom_bar()
 
 if '__name__'=='__main__':
-    prob = Probabinerator() #<-- requires dummy data for testing
+    df = pd.read_csv("http://people.stern.nyu.edu/wgreene/Text/Edition7/TableF18-2.csv")
+    print(df.head())
+    prob = Probabinerator(df, 'INVC')
     prob.count_index()
     prob.bin_combiner()
+    print("bin ranges: {}".format(prob.bin_ranges))
     prob.bin_masker()
+    print(prob.df.head())
