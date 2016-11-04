@@ -81,18 +81,18 @@ class Probabinerator:
 
         :param self.df: pandas dataframe as reference and target
         :param self.feature: reference column name (str) - will be used to create new one
-        :param self.bin_ranges: sorted list of newbins, only care about using the values as bin ranges [min, max]
+        :param self.bin_ranges: sorted list of newbins, as bin ranges [min, max]
         :return: modified pandas dataframe with categorical column
         """
         masks = []
 
         for item in self.bin_ranges:
-            mask = (self.df[self.feature] >= item[0]) & (self.df[self.feature] < item[1])
+            mask = (self.df[self.feature] >= item[0]) & (self.df[self.feature] <= item[1])
             masks.append(mask)
 
         for i, mask in enumerate(masks):
             self.df.loc[mask, (self.feature + '_cat')] = i
-            self.df[self.feature + '_cat'].fillna(0, inplace=True) #get the bottom category
+            self.df[self.feature + '_cat'].fillna(0, inplace=True) #if needed, get the bottom category
 
     def plot_with_newbins(self):
         """
