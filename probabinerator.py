@@ -92,7 +92,10 @@ class Probabinerator:
 
         for i, mask in enumerate(masks):
             self.df.loc[mask, (self.feature + '_cat')] = i
-            self.df[self.feature + '_cat'].fillna(0, inplace=True) #if needed, get the bottom category
+
+        #may have to put something in to get the ones on the high end tail?
+
+        self.df[self.feature + '_cat'].fillna(0, inplace=True) #if needed, get the bottom category
 
     def plot_with_newbins(self):
         """

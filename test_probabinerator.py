@@ -37,6 +37,16 @@ class TestProbabinerator:
         self.prob.bin_combiner()
         assert(all([isinstance(x, list) for x in self.prob.bin_ranges]))
 
+    def test_bin_masker(self):
+        """
+        Need to make sure results make sense!
+
+        """
+        self.prob.bin_masker()
+        #assert that value_counts for the _cat column are correct
+        #assert that the 0.0 cat does not include both min and max values
+
+
 if __name__=='__main__':
 
     #Not sure if this actually works or not
