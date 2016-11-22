@@ -29,6 +29,7 @@ class TestProbabinerator:
         self.prob.count_index()
         assert(isinstance(self.prob.invind, dict))
         assert(all([isinstance(x, list) for x in list(self.prob.invind.values())]))
+        #assert that values are in order
 
     def test_bin_combiner_result_type(self):
         """
@@ -49,7 +50,15 @@ class TestProbabinerator:
             print(item)
 
         #for TTME column, missing 99 (far right) and 40 (between two bins)
-            
+
+    def test_bin_combiner_no_weird_combinations(self):
+        """
+        What to do about ones like this, where the values are not adjacent?
+
+        {1: [1, 2, 16, 80, 85]}
+        :return:
+        """
+        pass
 
     def test_bin_masker(self):
         """
