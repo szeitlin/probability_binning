@@ -37,6 +37,20 @@ class TestProbabinerator:
         self.prob.bin_combiner()
         assert(all([isinstance(x, list) for x in self.prob.bin_ranges]))
 
+    def test_bin_combiner_no_missing_segments(self):
+        """
+        Check remaining values in kv_list to make sure bin_combiner didn't leave any out
+        :return:
+        """
+        #logic is to check that remaining values do not get lost between (or outside) the existing bin_ranges
+        print(self.prob.invind)
+        remaining_keys = self.prob.bin_combiner(debug=True)
+        for item in remaining_keys:
+            print(item)
+
+        #for TTME column, missing 99 (far right) and 40 (between two bins)
+            
+
     def test_bin_masker(self):
         """
         Need to make sure results make sense!

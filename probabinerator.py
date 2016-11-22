@@ -31,7 +31,7 @@ class Probabinerator:
         for key, val in counts.items():
             self.invind.setdefault(val, []).append(key)
 
-    def bin_combiner(self, bins=3, toplot=False):
+    def bin_combiner(self, bins=3, toplot=False, debug=False):
         """
         Use probability binning approach to
         combine bins when invind has many bins with unequal counts
@@ -52,7 +52,6 @@ class Probabinerator:
 
         for item in kv_list: #sort by values
 
-            for key,value in item: #can't do it this way, gives an error
                 #when the list is full enough, spit it out and re-initialize to empty
                 if sum(key_list) >= count_target:
 
@@ -65,12 +64,9 @@ class Probabinerator:
                 #until the list fills up, keep appending
                 if sum(key_list) < count_target:
 
-                    key_list.append(key)
-                    value_list.append(value[0])
+                    key_list.append(item[0])
+                    value_list.append(item[1][0]) # just take the first value in the list of values - why are we only taking the first one?
                     kv_list.remove(item)
-
-        #check if any items leftover
-        print("remaining pairs: {}".format(kv_list))
 
         #need this if the last batch is not big enough
         if toplot==True:
@@ -79,6 +75,10 @@ class Probabinerator:
         else:
             newbins[sum(key_list)] = [min(value_list), max(value_list)]
             self.bin_ranges = sorted(newbins.values(), key=lambda x:x[0])
+
+        if debug==True:
+            #check if any items leftover
+            print(kv_list)
 
     def bin_masker(self):
         """
@@ -121,7 +121,14 @@ if __name__ =='__main__':
     print(df.head())
     prob = Probabinerator(df, 'INVC')
     prob.count_index()
-    prob.bin_combiner()
+    prob.bin_combiner(debug=True)
+    print("bin ranges: {}".format(prob.bin_ranges))
+    prob.bin_masker()
+
+    print("try another column")
+    prob = Probabinerator(df, 'TTME')
+    prob.count_index()
+    prob.bin_combiner(debug=True)
     print("bin ranges: {}".format(prob.bin_ranges))
     prob.bin_masker()
     print(prob.df.head())
