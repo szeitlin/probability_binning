@@ -48,22 +48,29 @@ class Probabinerator:
 
         key_list, value_list = [],[]
 
-        for key,value in sorted(list(self.invind.items()), key=lambda x: x[1][0]): #sort by values
+        kv_list = sorted(list(self.invind.copy().items()), key=lambda x: x[1][0])
 
-            #when the list is full enough, spit it out and re-initialize to empty
-            if sum(key_list) >= count_target:
+        for item in kv_list: #sort by values
 
-                if toplot==True:
-                    newbins[sum(key_list)] = sum(value_list)/len(value_list) #use the mean
-                else:
-                    newbins[sum(key_list)] = [min(value_list), max(value_list)]
-                key_list, value_list = [], []
+            for key,value in item: #can't do it this way, gives an error
+                #when the list is full enough, spit it out and re-initialize to empty
+                if sum(key_list) >= count_target:
 
-            #until the list fills up, keep appending
-            if sum(key_list) < count_target:
+                    if toplot==True:
+                        newbins[sum(key_list)] = sum(value_list)/len(value_list) #use the mean
+                    else:
+                        newbins[sum(key_list)] = [min(value_list), max(value_list)]
+                    key_list, value_list = [], []
 
-                key_list.append(key)
-                value_list.append(value[0])
+                #until the list fills up, keep appending
+                if sum(key_list) < count_target:
+
+                    key_list.append(key)
+                    value_list.append(value[0])
+                    kv_list.remove(item)
+
+        #check if any items leftover
+        print("remaining pairs: {}".format(kv_list))
 
         #need this if the last batch is not big enough
         if toplot==True:
