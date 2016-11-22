@@ -49,13 +49,22 @@ class TestProbabinerator:
         for item in remaining_keys:
             print(item)
 
-        #for TTME column, missing 99 (far right) and 40 (between two bins)
+        #for TTME column, missing 99 (far right) and 45 (between two bins)
 
     def test_bin_combiner_no_weird_combinations(self):
         """
         What to do about ones like this, where the values are not adjacent?
 
         {1: [1, 2, 16, 80, 85]}
+        :return:
+        """
+        pass
+
+    def test_bin_combiner_bin_sizes_include_relevant_counts(self):
+        """
+        Example: third bin here is too small, and there are leftover values that would fit
+        bin sizes: bin sizes: [{280: [25, 44], 251: [0, 15], 182: [53, 90]}]
+        remaining includes: (77, [34, 69]) <-- 69 would fit in that 3rd bin without making the bins unequal
         :return:
         """
         pass

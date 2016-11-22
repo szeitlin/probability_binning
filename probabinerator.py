@@ -55,7 +55,6 @@ class Probabinerator:
         biggest_key = sorted(list(prob.invind.items()), reverse=True)
         ordered = sorted(biggest_key, key=lambda x:x[1][0])
 
-
         newbins = dict()
 
         counts_list, value_list = [], []
@@ -67,10 +66,13 @@ class Probabinerator:
         tracker = ordered.copy()
 
         for counts,v in ordered:
-            counts,v = item
+            item = counts,v #to potentially use for tracking
 
             #stopping criteria
-            if sum(counts) >= count_target:
+            if sum(counts_list) >= count_target:
+
+                #adjust the bin sizes to be more permissive
+                count_target = sum(counts_list)
 
                 if toplot==True:
                     newbins[sum(counts_list)] = sum(value_list)/len(value_list) #use the mean as the center
@@ -85,11 +87,11 @@ class Probabinerator:
                 #append sequential values
                 if len(v) == 1:
                     value_list.append(v[0]) #it's a list, have to index into it to get the contents
+                    tracker.remove(item)
                 elif len(v) == 2:
                     if v[1] - v[0] == 1:
-                        value_list.append(v[1])
-
-                #todo: also want to remove them from the tracker list
+                        value_list.extend(v)
+                        tracker.remove(item)
 
                 elif len(v) > 2:
                     tmp = pd.Series(v)
@@ -99,22 +101,19 @@ class Probabinerator:
                     else:
                         value_list.extend(tmp.where(delta==1).dropna().values)
 
+        #todo: still need to add something to get rid of the used ones & use the remaining values
+        print("remaining: {}". format(tracker))
+        if len(tracker) > 0 and any([x < count_target for x in newbins.keys()]):
+            #use any leftover ones here to expand the bin_ranges
+            for k,v in tracker:
+                #logic: find bin that is not > count_target
+                        # then check to see if any values would fit that range or widen it
 
+        #newbins[sum(counts_list)] = [min(value_list), max(value_list)]
+        self.bin_ranges = sorted(newbins.values(), key=lambda x:x[0])
 
-        #
-        # #need this if the last batch is not big enough
-        # if toplot==True:
-        #     newbins[sum(key_list)] = sum(value_list)/len(value_list)
-        #     self.newbins = newbins
-        # else:
-        #     newbins[sum(key_list)] = [min(value_list), max(value_list)]
-        #     self.bin_ranges = sorted(newbins.values(), key=lambda x:x[0])
-        #
-        # print("bin sizes: {}".format([newbins]))
-        #
-        # if debug==True:
-        #     #check if any items leftover
-        #     print(kv_list)
+        print("bin sizes: {}".format([newbins]))
+
 
     def bin_masker(self):
         """
