@@ -24,10 +24,12 @@ class Probabinerator:
         Potentially better way to identify bins for combining.
         Sort and take the diff, then group by that.
         """
-        self.df.sort_values(by=self.feature, inplace=True)
-        self.df[self.feature + "_diff"] = self.df[self.feature].diff()
+        diffname = self.feature + "_diff"
 
-        bins = self.df.groupby(self.feature + "_diff")[self.feature].count()
+        self.df.sort_values(by=self.feature, inplace=True)
+        self.df[diffname] = self.df[self.feature].diff()
+        self.df[diffname].fillna(0, inplace=True)
+        bins = self.df.groupby(diffname)[self.feature].count()
         
     def count_index(self) -> dict:
         """
