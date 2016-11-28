@@ -19,6 +19,16 @@ class Probabinerator:
         self.df = df
         self.feature = colname
 
+    def group_by_diff(self):
+        """
+        Potentially better way to identify bins for combining.
+        Sort and take the diff, then group by that.
+        """
+        self.df.sort_values(by=self.feature, inplace=True)
+        self.df[self.feature + "_diff"] = self.df[self.feature].diff()
+
+        bins = self.df.groupby(self.feature + "_diff")[self.feature].count()
+        
     def count_index(self) -> dict:
         """
         Group by counts.
@@ -103,9 +113,9 @@ class Probabinerator:
 
         #todo: still need to add something to get rid of the used ones & use the remaining values
         print("remaining: {}". format(tracker))
-        if len(tracker) > 0 and any([x < count_target for x in newbins.keys()]):
-            #use any leftover ones here to expand the bin_ranges
-            for k,v in tracker:
+        # if len(tracker) > 0 and any([x < count_target for x in newbins.keys()]):
+        #     #use any leftover ones here to expand the bin_ranges
+        #     for k,v in tracker:
                 #logic: find bin that is not > count_target
                         # then check to see if any values would fit that range or widen it
 
